@@ -25,7 +25,7 @@ public class Personagem : MonoBehaviour
     public AnimacaoPlayer PlayerAnim;
     void Start()
     {
-        posInicial = new Vector3(-2, 1.8f, 0);
+        posInicial = new Vector3(-3, 2, 0);
         transform.position = posInicial;
         GJ = GameObject.FindGameObjectWithTag("GameController").GetComponent<GerenciadorJogo>();
         Animacao = GetComponent<Animator>();
@@ -72,11 +72,11 @@ public class Personagem : MonoBehaviour
     {
         if (velocidade > 0)
         {
-            ImagemPersonagem.flipX = false;
+            transform.localScale = new Vector3(1,1, 1);
         }
         else if (velocidade < 0)
         {
-            ImagemPersonagem.flipX = true;
+            transform.localScale = new Vector3(-1, 1, 1);
         }
     }
     void Pular()
@@ -174,7 +174,7 @@ public class Personagem : MonoBehaviour
         ChanceText.text = "Vidas: " + chances.ToString();
         if (chances <= 0)
         {
-            Reiniciar();
+            GJ.Reiniciar();
         }
         else
         {
@@ -188,12 +188,7 @@ public class Personagem : MonoBehaviour
         int vida_parabarra = vida * 5;
         BarraDano.rectTransform.sizeDelta = new Vector2(vida_parabarra, 10);
     }
-    void Reiniciar()
-    {
-        SceneManager.LoadScene(0);
-    }
-
-    private float tempoAtaque = 0.5f; // Duração da animação de ataque
+    private float tempoAtaque = 0.5f;
 
     void Atacar()
     {

@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GerenciadorJogo : MonoBehaviour
 {
 
     public bool GameLigado = true;
-
+    public GameObject TelaGameOver;
 
     // Start is called before the first frame update
     void Start()
@@ -28,5 +29,15 @@ public class GerenciadorJogo : MonoBehaviour
     {
         GameLigado = true;
         Time.timeScale = 1;
+    }
+    public void MortePlayer()
+    {
+        TelaGameOver.SetActive(true);
+        GameLigado = false;
+        Time.timeScale = 0;
+    }
+    public void Reiniciar()
+    {
+        SceneManager.LoadScene(0);
     }
 }

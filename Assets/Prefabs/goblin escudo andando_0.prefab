@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 8984437162073803855}
   - component: {fileID: 7710009419329201245}
   - component: {fileID: 3147181310254477748}
+  - component: {fileID: -4556201214982277327}
   m_Layer: 8
   m_Name: goblin escudo andando_0
   m_TagString: Inimigo
@@ -193,9 +194,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62e9aa6159755634598fab9733a8234d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Velocidade: 0.03
+  Velocidade: 0.01
   DistInicial: 58
   DistFinal: 64
   Corpo: {fileID: 8984437162073803855}
   life: 3
   GoblinEscudo: {fileID: 2329767777145334782}
+--- !u!114 &-4556201214982277327
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3101529632700211160}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fe50579480b2884daa35458b4529487, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Goblinanimacao: {fileID: 582755675340797595}
