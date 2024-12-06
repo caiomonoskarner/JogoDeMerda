@@ -8,6 +8,7 @@ public class GerenciadorJogo : MonoBehaviour
 
     public bool GameLigado = true;
     public GameObject TelaGameOver;
+    public GameObject TelaVitoria;
 
     // Start is called before the first frame update
     void Start()
@@ -39,5 +40,11 @@ public class GerenciadorJogo : MonoBehaviour
     public void Reiniciar()
     {
         SceneManager.LoadScene(0);
+    }
+    public void Vitoria()
+    {
+        TelaVitoria.SetActive(true);
+        GameLigado=false;
+        Time.timeScale = 0;
     }
 }

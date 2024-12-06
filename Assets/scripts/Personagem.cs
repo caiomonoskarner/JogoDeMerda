@@ -8,9 +8,9 @@ public class Personagem : MonoBehaviour
 {
     public float velocidade;
     private Rigidbody2D Corpo;
-    public int vida = 3;
+    public int vida = 3;  // A vida do personagem (começa com 3)
     private float meuTempoDano = 0;
-    private bool Pode_Dano = true;
+    private bool Pode_Dano = true;  // Controla se o personagem pode tomar dano
     public SpriteRenderer ImagemPersonagem;
     public int qtd_pulo = 0;
     private Image BarraDano;
@@ -23,6 +23,7 @@ public class Personagem : MonoBehaviour
     public Vector3 posInicial;
     public GameObject Ataque;
     public AnimacaoPlayer PlayerAnim;
+
     void Start()
     {
         posInicial = new Vector3(-3, 2, 0);
@@ -45,6 +46,7 @@ public class Personagem : MonoBehaviour
             Atacar();
         }
     }
+
     void Mover()
     {
         velocidade = Input.GetAxis("Horizontal") * 5;
@@ -57,6 +59,7 @@ public class Personagem : MonoBehaviour
         {
             Animacao.SetBool("Andando", false);
         }
+
         if (Corpo.velocity.y > 1)
         {
             Animacao.SetBool("ForaDoChao", true);
@@ -72,13 +75,14 @@ public class Personagem : MonoBehaviour
     {
         if (velocidade > 0)
         {
-            transform.localScale = new Vector3(1,1, 1);
+            transform.localScale = new Vector3(1, 1, 1);
         }
         else if (velocidade < 0)
         {
             transform.localScale = new Vector3(-1, 1, 1);
         }
     }
+
     void Pular()
     {
         if (Input.GetKeyDown(KeyCode.Z))
@@ -90,10 +94,12 @@ public class Personagem : MonoBehaviour
             }
         }
     }
+
     void acaoPulo()
     {
         Corpo.AddForce(transform.up * 300f);
     }
+
     void OnTriggerStay2D(Collider2D gatilho)
     {
         if (gatilho.gameObject.tag == "Pisavel")
@@ -101,93 +107,110 @@ public class Personagem : MonoBehaviour
             Animacao.SetBool("ForaDoChao", false);
         }
     }
+
     void OnTriggerEnter2D(Collider2D gatilho)
     {
-        if(gatilho.gameObject.tag == "Pisavel")
+        if (gatilho.gameObject.tag == "Pisavel")
         {
             qtd_pulo = 0;
         }
+
         if (gatilho.gameObject.tag == "Moeda")
         {
             Destroy(gatilho.gameObject);
             moedas++;
             MoedaTexto.text = moedas.ToString();
         }
+
         if (gatilho.gameObject.tag == "MorteHora")
         {
             if (Pode_Dano == true)
             {
                 Pode_Dano = false;
-                vida = vida - 20;
+                vida -= 20;
                 PerderVida();
-                Morrer();
+                VerificarMorte();  // Verifica se o personagem morreu
             }
         }
+
         if (gatilho.gameObject.tag == "Checkpoint")
         {
             posInicial = gatilho.gameObject.transform.position;
             Destroy(gatilho.gameObject);
         }
     }
+
     private void OnCollisionEnter2D(Collision2D colisao)
     {
         if (colisao.gameObject.tag == "Inimigo")
         {
             if (Pode_Dano == true)
             {
-                vida--;
+                vida--;  // Reduz a vida do personagem quando colide com inimigo
                 PerderVida();
                 Pode_Dano = false;
                 ImagemPersonagem.color = UnityEngine.Color.red;
-                if (vida <= 0)
-                {
-                    Morrer();
-                }
+                VerificarMorte();  // Verifica se o personagem morreu
             }
         }
     }
+
     void Dano()
     {
         if (Pode_Dano == false)
         {
-            TemporizadorDano();
+            TemporizadorDano();  // Chama o temporizador de dano para evitar que o personagem tome dano rapidamente
         }
     }
+
     void TemporizadorDano()
     {
         meuTempoDano += Time.deltaTime;
-        if (meuTempoDano > 0.5f)
+        if (meuTempoDano > 0.5f)  // Após 0.5 segundos, o personagem pode tomar dano novamente
         {
             Pode_Dano = true;
             meuTempoDano = 0;
-            ImagemPersonagem.color = UnityEngine.Color.white;
+            ImagemPersonagem.color = UnityEngine.Color.white;  // Restaura a cor da imagem do personagem
         }
     }
-    void PerderVida()
+
+    public void PerderVida()
     {
         int vida_parabarra = vida * 5;
-        BarraDano.rectTransform.sizeDelta = new Vector2(vida_parabarra, 10);
+        BarraDano.rectTransform.sizeDelta = new Vector2(vida_parabarra, 10);  // Atualiza a barra de vida
     }
+
+    // Verifica se a vida do personagem chegou a zero e chama o método Morrer
+    public void VerificarMorte()
+    {
+        if (vida <= 0)
+        {
+            Morrer();  // Chama o método Morrer quando a vida chega a zero
+        }
+    }
+
     void Morrer()
     {
         chances--;
         ChanceText.text = "Vidas: " + chances.ToString();
         if (chances <= 0)
         {
-            GJ.Reiniciar();
+            GJ.Reiniciar();  // Reinicia o jogo caso o personagem não tenha mais chances
         }
         else
         {
-            Inicializar();
+            Inicializar();  // Reinicializa o personagem
         }
     }
+
     void Inicializar()
     {
-        transform.position = posInicial;
-        vida = 10;
+        transform.position = posInicial;  // Reseta a posição do personagem
+        vida = 10;  // Restaura a vida para o valor inicial
         int vida_parabarra = vida * 5;
-        BarraDano.rectTransform.sizeDelta = new Vector2(vida_parabarra, 10);
+        BarraDano.rectTransform.sizeDelta = new Vector2(vida_parabarra, 10);  // Atualiza a barra de vida
     }
+
     private float tempoAtaque = 0.5f;
 
     void Atacar()
@@ -199,11 +222,13 @@ public class Personagem : MonoBehaviour
             Invoke("DesativaEspadaEPararAnimacao", tempoAtaque);
         }
     }
+
     void DesativaEspadaEPararAnimacao()
     {
         Ataque.SetActive(false);
         PlayerAnim.PlayAnimation("Correndo");
     }
+
     public void AtivaEspada()
     {
         Ataque.SetActive(true);
